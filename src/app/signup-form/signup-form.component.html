@@ -1,0 +1,122 @@
+<div >
+    <div>
+    
+    <form novalidate 
+      (ngSubmit)="onFormSubmit(signupForm)" 
+      #signupForm="ngForm" id = "formulario">
+        <fieldset>
+        <legend>SignUp</legend>
+          
+          <!-- Email -->
+            <div class="grupo">
+            <label for="inputEmail" >Email</label>
+            <div class="col-lg-7">
+            <input type="text"  
+              [(ngModel)]= "user.email" name="email"
+                #email = "ngModel" id="inputEmail" 
+                placeholder="Email"
+                pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"
+                required>
+           </div>
+           <!-- Validacion Email-->
+  
+          <div *ngIf="email.invalid && ( email.touched)"
+             class="danger">
+             <div *ngIf = "email.errors?.required">
+               Email field can't be blank
+             </div>
+             <div *ngIf = "email.errors?.pattern && email.touched">
+               Email no valido
+             </div>
+           </div>
+          </div>
+  
+        <!-- Password -->
+        <div ngModelGroup="password" #userPassword="ngModelGroup" 
+        class="grupo"
+        >
+             <div>
+                <label for="inputPassword">Password</label>
+                <div>
+                  <input type="password" 
+                 [(ngModel)]="user.password.pwd" name="pwd"
+                    id="inputPassword" placeholder="Password"
+                    minlength ="8" required
+                   >
+                 </div>
+             </div>
+  
+            <div >
+               <label for="confirmPassword">Confirm Password</label>
+                  <div>
+                  <input type="password" 
+                  [(ngModel)]="user.password.confirm_pwd" name="confirm_pwd"
+                    id="confirmPassword" placeholder="Confirm Password">
+               </div>
+             </div>
+           
+        <!-- Validacion password -->
+            <div *ngIf="(userPassword.invalid|| userPassword.value?.pwd != userPassword.value?.confirm_pwd) && (userPassword.touched)"
+           class="danger">
+           
+             <div *ngIf = "userPassword.invalid; else nomatch">
+               Password necesita mas de 8 caracteres
+             </div>
+             <ng-template #nomatch >
+               Passwords don't match
+             </ng-template>
+         
+           </div>
+        </div>				
+        <!-- Select Gender block -->
+          <div class="grupo">
+            <label for="select">Gender</label>
+             <div >
+              <select id="select"
+                [(ngModel)] = "user.gender" name = "gender"
+                required>
+                
+                <option *ngFor = "let g of gender"  
+                  [value] = "g"> {{g}} 
+                </option>
+              </select>
+             </div>
+          </div>
+        
+        <!-- Terms checkbox block -->
+  
+        <div  class="grupo">
+                   <div>
+                    <input type="checkbox" 
+                      ngModel name = "terms"
+                      [(ngModel)]="user.terms"
+                      #terms = "ngModel"
+                      required> Confirm that you've read the Terms and Condition
+                  </div>
+              
+  
+              <!-- Terms checkbox error block -->
+                <div *ngIf="(terms.invalid && terms.touched)"
+                 class="danger">
+             Tu necesitas aceptar los terminos
+                </div>
+        </div>
+           
+           <!-- Buttons block -->
+          <div class="grupo">
+            <div>
+                <button class="country-block" type="reset" >Cancel</button>
+                <button  class="country-block" type="submit"
+                 [disabled]="!signupForm.form.valid"> Submit
+            </button>
+          </div>
+          </div>
+  
+  
+      </fieldset>
+    </form>
+    
+    </div>
+  </div>
+  <p>{{signupForm.value| json  }}</p>
+  <p>{{user | json  }}</p>
